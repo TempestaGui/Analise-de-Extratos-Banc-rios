@@ -6,8 +6,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-public class BankTransactionalAnalyzerSimple {
-    private static final String RESOURCE = "src/main/resources/extratodBancariosMark.csv";
+public class BankTransactionalAnalyzerSimple2_1 {
+    private static final String RESOURCE = "src/main/resources/extratosBancarioMark.csv";
     public static void main(String[] args) throws IOException {
         Path path = Paths.get(RESOURCE);
         List<String> lines = Files.readAllLines(path);
