@@ -1,10 +1,8 @@
-package utils;
-
 import org.aplicacao.BankTransactionalAnalyzer.entities.BankTransactional;
 import org.aplicacao.BankTransactionalAnalyzer.utils.BankStatementCSVParser;
 import org.aplicacao.BankTransactionalAnalyzer.utils.BankStatementParser;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -26,9 +24,9 @@ public class BankStatementCSVParserTest {
         final double tolerance = 0.0d;
 
         //Then
-        Assert.assertEquals(expected.getDate(), result.getDate());
-        Assert.assertEquals(expected.getAmount(), result.getAmount(), tolerance);
-        Assert.assertEquals(expected.getDescription(), result.getDescription());
+        assertEquals(expected.getDate(), result.getDate());
+        assertEquals(expected.getAmount(), result.getAmount(), tolerance);
+        assertEquals(expected.getDescription(), result.getDescription());
     }
 
 }
