@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BankStatementCSVParserTest {
 
@@ -27,6 +30,26 @@ public class BankStatementCSVParserTest {
         assertEquals(expected.getDate(), result.getDate());
         assertEquals(expected.getAmount(), result.getAmount(), tolerance);
         assertEquals(expected.getDescription(), result.getDescription());
+    }
+
+    @Test
+    public void shouldParseLines() throws Exception {
+        //Given
+        final List<String> lines = new ArrayList<>(Arrays.asList(
+                "30-01-2017,-50,Tesco",
+                "30-01-2017,-50,Tesco"));
+
+        //When
+        final List<BankTransactional> result = statementParser.parseLinesFrom(lines);
+
+        //Then
+        assertEquals(2, result.size());
+
+        BankTransactional transactional = result.get(0);
+
+        assertEquals(LocalDate.of(2017,Month.JANUARY,30), transactional.getDate());
+        assertEquals(-50, transactional.getAmount());
+        assertEquals("Tesco", transactional.getDescription());
     }
 
 }
