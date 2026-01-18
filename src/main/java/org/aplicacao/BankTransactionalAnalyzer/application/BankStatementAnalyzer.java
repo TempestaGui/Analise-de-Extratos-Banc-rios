@@ -22,6 +22,8 @@ public class BankStatementAnalyzer {
         System.out.println("The total in January is: "+ bankStatementProcessor.calculateTotalAmountByMonth(Month.JANUARY));
         System.out.println("The total in February is: "+ bankStatementProcessor.calculateTotalAmountByMonth(Month.FEBRUARY));
         System.out.println("The total salary received is: "+bankStatementProcessor.calculateTotalByCategory("Salary"));
+        System.out.println("The transactions above 50$: "+bankStatementProcessor.findTransactionsGreaterThanEqual(3000.0));
+        System.out.println("The transactions in a given month: "+bankStatementProcessor.findTransactionsInMonth(Month.JANUARY));
     }
 
     public static void main(String[] args) throws IOException {

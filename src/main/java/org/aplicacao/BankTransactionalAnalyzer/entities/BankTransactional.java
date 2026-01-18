@@ -38,4 +38,13 @@ public class BankTransactional {
     public int hashCode() {
         return Objects.hash(amount, description, date);
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "amount=" + amount +
+                ", description='" + description + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }
