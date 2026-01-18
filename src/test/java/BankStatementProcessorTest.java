@@ -1,5 +1,6 @@
 import org.aplicacao.BankTransactionalAnalyzer.entities.BankTransactional;
 import org.aplicacao.BankTransactionalAnalyzer.services.BankStatementProcessor;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -11,6 +12,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BankStatementProcessorTest {
 
     private BankStatementProcessor processor;
+
+    @BeforeEach
+    void setUp(){
+        BankTransactional t1 = new BankTransactional(
+                50.0, "teste", LocalDate.of(2017, Month.JANUARY, 30));
+        BankTransactional t2 = new BankTransactional(
+                100.0, "teste", LocalDate.of(2017, Month.JANUARY, 30));
+
+        processor = new BankStatementProcessor(List.of(t1,t2));
+    }
 
     @Test
     public void shouldCalculateTotalAmount() throws Exception {
@@ -30,12 +41,7 @@ public class BankStatementProcessorTest {
     @Test
     public void shouldCalculateTotalAmountByMonth() throws Exception {
         //Given
-        BankTransactional t1 = new BankTransactional(
-                50.0, "teste", LocalDate.of(2017, Month.JANUARY, 30));
-        BankTransactional t2 = new BankTransactional(
-                100.0, "teste", LocalDate.of(2017, Month.JANUARY, 30));
-
-        processor = new BankStatementProcessor(List.of(t1,t2));
+        setUp();
 
         //when
         double total = processor.calculateTotalAmountByMonth(Month.JANUARY);
@@ -48,13 +54,7 @@ public class BankStatementProcessorTest {
     public void shouldCalculateTotalAmountByDescription() throws Exception {
         //Given
         String description = "teste";
-
-        BankTransactional t1 = new BankTransactional(
-                50.0, "teste", LocalDate.of(2017, Month.JANUARY, 30));
-        BankTransactional t2 = new BankTransactional(
-                100.0, "teste", LocalDate.of(2017, Month.JANUARY, 30));
-
-        processor = new BankStatementProcessor(List.of(t1,t2));
+        setUp();
 
         //When
         double total = processor.calculateTotalByCategory(description);
@@ -67,13 +67,7 @@ public class BankStatementProcessorTest {
     public void shouldReturnTransactionsGreaterThan() throws Exception {
         //Given
         final double amount = 70.0;
-
-        BankTransactional t1 = new BankTransactional(
-                50.0, "teste", LocalDate.of(2017, Month.JANUARY, 30));
-        BankTransactional t2 = new BankTransactional(
-                100.0, "teste", LocalDate.of(2017, Month.JANUARY, 30));
-
-        processor = new BankStatementProcessor(List.of(t1,t2));
+        setUp();
 
         //When
         List<BankTransactional> result = processor.findTransactionsGreaterThanEqual(amount);
@@ -86,12 +80,7 @@ public class BankStatementProcessorTest {
     @Test
     public void shouldReturnTransactionsByMonth() throws Exception {
         //Given
-        BankTransactional t1 = new BankTransactional(
-                50.0, "teste", LocalDate.of(2017, Month.JANUARY, 30));
-        BankTransactional t2 = new BankTransactional(
-                100.0, "teste", LocalDate.of(2017, Month.JANUARY, 30));
-
-        processor = new BankStatementProcessor(List.of(t1,t2));
+        setUp();
 
         //When
         List<BankTransactional> result = processor.findTransactionsInMonth(Month.JANUARY);
