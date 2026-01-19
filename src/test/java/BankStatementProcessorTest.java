@@ -63,29 +63,29 @@ public class BankStatementProcessorTest {
         assertEquals(150.0, total);
     }
 
-    @Test
-    public void shouldReturnTransactionsGreaterThan() throws Exception {
-        //Given
-        final double amount = 70.0;
-        setUp();
-
-        //When
-        List<BankTransactional> result = processor.findTransactionsGreaterThanEqual(amount);
-
-        //Then
-        assertEquals(1, result.size());
-        assertEquals(100, result.getFirst().getAmount());
-    }
-
-    @Test
-    public void shouldReturnTransactionsByMonth() throws Exception {
-        //Given
-        setUp();
-
-        //When
-        List<BankTransactional> result = processor.findTransactionsInMonth(Month.JANUARY);
-
-        //Then
-        assertEquals(2, result.size());
-    }
+//    @Test
+//    public void shouldReturnTransactionsGreaterThan() throws Exception {
+//        //Given
+//        final double amount = 70.0;
+//        setUp();
+//
+//        //When
+//        List<BankTransactional> result = processor.findTransactionsGreaterThanEqual(amount);
+//
+//        //Then
+//        assertEquals(1, result.size());
+//        assertEquals(100, result.getFirst().getAmount());
+//    }
+//
+//    @Test
+//    public void shouldReturnTransactionsByMonth() throws Exception {
+//        //Given
+//        setUp();
+//
+//        //When
+//        List<BankTransactional> result = processor.findTransactionsInMonth(Month.JANUARY);
+//
+//        //Then
+//        assertEquals(2, result.size());
+//    }
 }

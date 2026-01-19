@@ -1,6 +1,7 @@
 package org.aplicacao.BankTransactionalAnalyzer.services;
 
 import org.aplicacao.BankTransactionalAnalyzer.entities.BankTransactional;
+import org.aplicacao.BankTransactionalAnalyzer.utils.BankTransactionFilter;
 
 import java.time.Month;
 import java.util.ArrayList;
@@ -41,20 +42,10 @@ public class BankStatementProcessor {
         return total;
     }
 
-    public List<BankTransactional> findTransactionsGreaterThanEqual(final double amount){
+    public List<BankTransactional> findTransactions(final BankTransactionFilter filter){
         final List<BankTransactional> result = new ArrayList<>();
         for(final BankTransactional transactional: bankTransactionalList){
-            if(transactional.getAmount() >= amount){
-                result.add(transactional);
-            }
-        }
-        return result;
-    }
-
-    public List<BankTransactional> findTransactionsInMonth(final Month month){
-        final List<BankTransactional> result = new ArrayList<>();
-        for(final BankTransactional transactional: bankTransactionalList){
-            if(transactional.getDate().getMonth() == month){
+            if(filter.test(transactional)){
                 result.add(transactional);
             }
         }
