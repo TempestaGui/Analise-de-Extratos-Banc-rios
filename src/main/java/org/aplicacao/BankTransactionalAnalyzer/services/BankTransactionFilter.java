@@ -1,4 +1,4 @@
-package org.aplicacao.BankTransactionalAnalyzer.utils;
+package org.aplicacao.BankTransactionalAnalyzer.services;
 
 import org.aplicacao.BankTransactionalAnalyzer.entities.BankTransactional;
 

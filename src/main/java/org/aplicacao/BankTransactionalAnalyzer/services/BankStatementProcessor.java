@@ -1,7 +1,6 @@
 package org.aplicacao.BankTransactionalAnalyzer.services;
 
 import org.aplicacao.BankTransactionalAnalyzer.entities.BankTransactional;
-import org.aplicacao.BankTransactionalAnalyzer.utils.BankTransactionFilter;
 
 import java.time.Month;
 import java.util.ArrayList;
@@ -15,31 +14,18 @@ public class BankStatementProcessor {
     }
 
     public double calculateTotalAmount(){
-        double total = 0;
-        for(final BankTransactional bankTransactional: bankTransactionalList){
-            total += bankTransactional.getAmount();
-        }
-        return total;
+        return summarizeTransaction(((accumulator, transactional) ->
+                accumulator + transactional.getAmount()));
     }
 
     public double calculateTotalAmountByMonth(final Month month){
-        double total = 0;
-        for(final BankTransactional bankTransactional: bankTransactionalList){
-            if(bankTransactional.getDate().getMonth() == month){
-                total += bankTransactional.getAmount();
-            }
-        }
-        return total;
+        return summarizeTransaction(((accumulator, transactional) ->
+                transactional.getDate().getMonth() == month ? accumulator + transactional.getAmount() : accumulator));
     }
 
     public double calculateTotalByCategory(final String category){
-        double total = 0;
-        for(final BankTransactional bankTransactional: bankTransactionalList){
-            if(bankTransactional.getDescription().equals(category)){
-                total += bankTransactional.getAmount();
-            }
-        }
-        return total;
+        return summarizeTransaction(((accumulator, transactional) ->
+                transactional.getDescription().equals(category) ? accumulator + transactional.getAmount() : accumulator));
     }
 
     public List<BankTransactional> findTransactions(final BankTransactionFilter filter){
@@ -48,6 +34,14 @@ public class BankStatementProcessor {
             if(filter.test(transactional)){
                 result.add(transactional);
             }
+        }
+        return result;
+    }
+
+    public double summarizeTransaction(final BankTransactionSummarizer bankTransactionSummarizer){
+        double result = 0;
+        for(final BankTransactional transactional: bankTransactionalList){
+            result = bankTransactionSummarizer.summarize(result, transactional);
         }
         return result;
     }
