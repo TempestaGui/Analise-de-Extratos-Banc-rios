@@ -28,6 +28,16 @@ public class BankStatementProcessor {
                 transactional.getDescription().equals(category) ? accumulator + transactional.getAmount() : accumulator));
     }
 
+    public double maxTransaction(){
+        return summarizeTransaction(((accumulator, transactional) ->
+               Math.max(accumulator, transactional.getAmount())));
+    }
+
+    public double minTransaction(){
+        return summarizeTransaction(((accumulator, transactional) ->
+                Math.min(accumulator, transactional.getAmount())));
+    }
+
     public List<BankTransactional> findTransactions(final BankTransactionFilter filter){
         final List<BankTransactional> result = new ArrayList<>();
         for(final BankTransactional transactional: bankTransactionalList){
