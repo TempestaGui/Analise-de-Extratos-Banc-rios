@@ -3,6 +3,10 @@ package org.aplicacao.BankTransactionalAnalyzer.application;
 import org.aplicacao.BankTransactionalAnalyzer.entities.SummaryStatistics;
 import org.aplicacao.BankTransactionalAnalyzer.enums.FilesName;
 import org.aplicacao.BankTransactionalAnalyzer.entities.BankTransactional;
+import org.aplicacao.BankTransactionalAnalyzer.exception.DateInTheFutureException;
+import org.aplicacao.BankTransactionalAnalyzer.exception.DescriptionTooLongException;
+import org.aplicacao.BankTransactionalAnalyzer.exception.InvalidAmountException;
+import org.aplicacao.BankTransactionalAnalyzer.exception.InvalidDateFormat;
 import org.aplicacao.BankTransactionalAnalyzer.exporters.HtmlExporter;
 import org.aplicacao.BankTransactionalAnalyzer.exporters.Exporter;
 import org.aplicacao.BankTransactionalAnalyzer.utils.BankStatementCSVParser;
@@ -18,7 +22,7 @@ import java.time.Month;
 import java.util.List;
 
 public class BankStatementAnalyzer {
-    public void analyzer(final BankStatementParser bankStatementParser) throws IOException {
+    public void analyzer(final BankStatementParser bankStatementParser) throws IOException, DateInTheFutureException, DescriptionTooLongException, InvalidAmountException, InvalidDateFormat {
         final List<String> lines = Files.readAllLines(Paths.get(FilesName.BANK_TRANSACTIONS.getName()));
         final List<BankTransactional> transactions = bankStatementParser.parseLinesFrom(lines);
         final BankStatementProcessor bankStatementProcessor = new BankStatementProcessor(transactions);
@@ -44,7 +48,7 @@ public class BankStatementAnalyzer {
         System.out.println("Html created!");
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, DateInTheFutureException, DescriptionTooLongException, InvalidAmountException, InvalidDateFormat {
        BankStatementAnalyzer analyzer = new BankStatementAnalyzer();
        BankStatementParser bankStatementParser = new BankStatementCSVParser();
 
