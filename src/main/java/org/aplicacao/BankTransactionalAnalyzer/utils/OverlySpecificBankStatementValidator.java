@@ -1,10 +1,5 @@
 package org.aplicacao.BankTransactionalAnalyzer.utils;
 
-import org.aplicacao.BankTransactionalAnalyzer.exception.DateInTheFutureException;
-import org.aplicacao.BankTransactionalAnalyzer.exception.DescriptionTooLongException;
-import org.aplicacao.BankTransactionalAnalyzer.exception.InvalidAmountException;
-import org.aplicacao.BankTransactionalAnalyzer.exception.InvalidDateFormat;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -23,22 +18,28 @@ public class OverlySpecificBankStatementValidator {
         this.formatter = formatter;
     }
 
-    public void validate() {
+    public Notification validate() {
+        final Notification notification = new Notification();
+
         if(this.description.length() > 100){
-            throw new IllegalArgumentException("The description is too long");
+            notification.addError("The description is too long");
         }
 
         final LocalDate parseDate;
         try{
             parseDate = LocalDate.parse(this.date, formatter);
+            if (parseDate.isAfter(LocalDate.now())){
+                notification.addError("date cannot be in the future");
+            }
         }catch (DateTimeParseException e){
-            throw new IllegalArgumentException("invalid date format");
+            notification.addError("invalid date format");
         }
 
         try{
             Double.parseDouble(this.amount);
         }catch (NumberFormatException e) {
-            throw new IllegalArgumentException("invalid format for amount");
+            notification.addError("invalid amount format");
         }
+        return notification;
     }
 }
