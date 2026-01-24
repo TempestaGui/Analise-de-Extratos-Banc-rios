@@ -9,6 +9,6 @@ import org.aplicacao.BankTransactionalAnalyzer.exception.InvalidDateFormat;
 import java.util.List;
 
 public interface BankStatementParser {
-    BankTransactional parseFrom(String line) throws DateInTheFutureException, DescriptionTooLongException, InvalidAmountException, InvalidDateFormat;
-    List<BankTransactional> parseLinesFrom(List<String> lines) throws DateInTheFutureException, DescriptionTooLongException, InvalidAmountException, InvalidDateFormat;
+    BankTransactional parseFrom(String line);
+    List<BankTransactional> parseLinesFrom(List<String> lines);
 }

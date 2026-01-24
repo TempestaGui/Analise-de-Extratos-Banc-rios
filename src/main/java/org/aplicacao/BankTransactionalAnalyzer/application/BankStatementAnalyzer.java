@@ -22,7 +22,7 @@ import java.time.Month;
 import java.util.List;
 
 public class BankStatementAnalyzer {
-    public void analyzer(final BankStatementParser bankStatementParser) throws IOException, DateInTheFutureException, DescriptionTooLongException, InvalidAmountException, InvalidDateFormat {
+    public void analyzer(final BankStatementParser bankStatementParser) throws IOException {
         final List<String> lines = Files.readAllLines(Paths.get(FilesName.BANK_TRANSACTIONS.getName()));
         final List<BankTransactional> transactions = bankStatementParser.parseLinesFrom(lines);
         final BankStatementProcessor bankStatementProcessor = new BankStatementProcessor(transactions);
@@ -48,7 +48,7 @@ public class BankStatementAnalyzer {
         System.out.println("Html created!");
     }
 
-    public static void main(String[] args) throws IOException, DateInTheFutureException, DescriptionTooLongException, InvalidAmountException, InvalidDateFormat {
+    public static void main(String[] args) throws IOException {
        BankStatementAnalyzer analyzer = new BankStatementAnalyzer();
        BankStatementParser bankStatementParser = new BankStatementCSVParser();
 
