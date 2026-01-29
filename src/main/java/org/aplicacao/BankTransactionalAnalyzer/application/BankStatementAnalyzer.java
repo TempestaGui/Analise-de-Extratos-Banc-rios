@@ -38,6 +38,8 @@ public class BankStatementAnalyzer {
         System.out.println("The total in January is: "+ bankStatementProcessor.calculateTotalAmountByMonth(Month.JANUARY));
         System.out.println("The total in February is: "+ bankStatementProcessor.calculateTotalAmountByMonth(Month.FEBRUARY));
         System.out.println("The total salary received is: "+bankStatementProcessor.calculateTotalByCategory("Salary"));
+        System.out.println("The total for transactions is: "+bankStatementProcessor.calculateTotalTransaction());
+        System.out.printf("The average of transactions is: %.2f \n", bankStatementProcessor.averageTransactions());
         System.out.println("The transactions InFebruary And Expansive "+filtered);
 
         Files.writeString(Path.of("report.html"), html);

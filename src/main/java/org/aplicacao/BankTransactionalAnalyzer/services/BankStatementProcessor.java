@@ -5,6 +5,7 @@ import org.aplicacao.BankTransactionalAnalyzer.entities.BankTransactional;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BankStatementProcessor {
     private final List<BankTransactional> bankTransactionalList;
@@ -16,6 +17,11 @@ public class BankStatementProcessor {
     public double calculateTotalAmount(){
         return summarizeTransaction(((accumulator, transactional) ->
                 accumulator + transactional.getAmount()));
+    }
+
+    public double calculateTotalTransaction(){
+        return summarizeTransaction(((accumulator, transactional) ->
+                transactional != null ? accumulator + 1 : accumulator));
     }
 
     public double calculateTotalAmountByMonth(final Month month){
@@ -36,6 +42,12 @@ public class BankStatementProcessor {
     public double minTransaction(){
         return summarizeTransaction(((accumulator, transactional) ->
                 Math.min(accumulator, transactional.getAmount())));
+    }
+
+    public double averageTransactions(){
+        double total = calculateTotalAmount();
+        double qntTransaction = calculateTotalTransaction();
+        return total / qntTransaction;
     }
 
     public List<BankTransactional> findTransactions(final BankTransactionFilter filter){
