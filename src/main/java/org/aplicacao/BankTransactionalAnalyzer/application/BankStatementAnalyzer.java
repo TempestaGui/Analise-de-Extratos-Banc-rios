@@ -10,6 +10,9 @@ import org.aplicacao.BankTransactionalAnalyzer.services.BankStatementProcessor;
 import org.aplicacao.BankTransactionalAnalyzer.utils.BankStatementParser;
 
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,7 +21,8 @@ import java.time.Month;
 import java.util.List;
 
 public class BankStatementAnalyzer {
-    public void analyzer(final BankStatementParser bankStatementParser) throws IOException {
+
+    public String analyzer(final BankStatementParser bankStatementParser) throws IOException {
         final List<String> lines = Files.readAllLines(Paths.get(FilesName.BANK_TRANSACTIONS.getName()));
         final List<BankTransactional> transactions = bankStatementParser.parseLinesFrom(lines);
         final BankStatementProcessor bankStatementProcessor = new BankStatementProcessor(transactions);
@@ -34,21 +38,53 @@ public class BankStatementAnalyzer {
         Exporter exporter = new HtmlExporter();
         String html = exporter.export(statistics);
 
-        System.out.println("The total for all transactions is: "+ bankStatementProcessor.calculateTotalAmount());
-        System.out.println("The total in January is: "+ bankStatementProcessor.calculateTotalAmountByMonth(Month.JANUARY));
-        System.out.println("The total in February is: "+ bankStatementProcessor.calculateTotalAmountByMonth(Month.FEBRUARY));
-        System.out.println("The total salary received is: "+bankStatementProcessor.calculateTotalByCategory("Salary"));
-        System.out.println("The total for transactions is: "+bankStatementProcessor.calculateTotalTransaction());
-        System.out.printf("The average of transactions is: %.2f \n", bankStatementProcessor.averageTransactions());
-        System.out.println("The transactions InFebruary And Expansive "+filtered);
+        String result = "total: " + bankStatementProcessor.calculateTotalAmount()+
+                "\nJanuary: " + bankStatementProcessor.calculateTotalAmountByMonth(Month.JANUARY) +
+                "\nFebruary: " + bankStatementProcessor.calculateTotalAmountByMonth(Month.FEBRUARY) +
+                "\nsalary: " + bankStatementProcessor.calculateTotalByCategory("Salary") +
+                "\ntransactions: " + bankStatementProcessor.calculateTotalTransaction() +
+                String.format("\nAverage: %.2f", bankStatementProcessor.averageTransactions()) +
+                "\nThe transactions InFebruary And Expansive " + filtered;
 
         Files.writeString(Path.of("report.html"), html);
         System.out.println("Html created!");
+
+        return result;
     }
+
 
     public static void main(String[] args) throws IOException {
        BankStatementAnalyzer analyzer = new BankStatementAnalyzer();
        BankStatementParser bankStatementParser = new BankStatementCSVParser();
+
+
+        JFrame frame = new JFrame("Bank Transaction analyzer");
+        frame.setSize(400, 200);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
+
+        JLabel label = new JLabel("your transactions");
+        label.setBounds(130, 30, 150, 30);
+
+        JButton button = new JButton("Click here");
+        button.setBounds(120, 80, 150, 30);
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String result = analyzer.analyzer(bankStatementParser);
+                    JOptionPane.showMessageDialog(frame, result);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+        frame.add(label);
+        frame.add(button);
+
+        frame.setVisible(true);
 
        analyzer.analyzer(bankStatementParser);
     }
